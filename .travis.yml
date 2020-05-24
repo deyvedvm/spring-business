@@ -11,6 +11,10 @@ branches:
   only:
     - master
 
+cache:
+  directories:
+    - $HOME/.m2
+
 jobs:
   include:
     - stage: clean
@@ -19,10 +23,14 @@ jobs:
       script: ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
     - stage: test
       script: ./mvnw test -B
+    - stage: codecov
+      script: bash <(curl -s https://codecov.io/bash)
     - stage: build image
       script: ./mvnw spring-boot:build-image
     - stage: pull docker hub
-      script: docker push spring-business:0.0.1-SNAPSHOT
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker push spring-business:0.0.1
     - stage: deploy heroku
       deploy:
         provider: heroku
