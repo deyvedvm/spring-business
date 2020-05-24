@@ -23,6 +23,12 @@ jobs:
       script: ./mvnw spring-boot:build-image
     - stage: pull docker hub
       script: docker push deyvedvm/spring-business:0.0.1
+    - stage: deploy heroku
+      deploy:
+        provider: heroku
+        app: spring-business
+        api_key: $HEROKU_AUTH_TOKEN
+
 
 notifications:
   email: true
