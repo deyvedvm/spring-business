@@ -1,0 +1,28 @@
+language: java
+os: linux
+dist: bionic
+arch: amd64
+jdk:
+  - openjdk8
+  - openjdk11
+  - openjdk-ea
+
+branches:
+  only:
+    - master
+
+jobs:
+  include:
+    - stage: clean
+      script: ./mvnw clean
+    - stage: install
+      script: ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+    - stage: test
+      script: ./mvnw test -B
+    - stage: build image
+      script: ./mvnw spring-boot:build-image
+    - stage: pull docker hub
+      script: docker push deyvedvm/spring-business:0.0.1
+
+notifications:
+  email: true
