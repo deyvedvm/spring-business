@@ -22,7 +22,7 @@ jobs:
     - stage: build image
       script: ./mvnw spring-boot:build-image
     - stage: pull docker hub
-      script: docker push deyvedvm/spring-business:0.0.1
+      script: docker push spring-business:0.0.1-SNAPSHOT
     - stage: deploy heroku
       deploy:
         provider: heroku
