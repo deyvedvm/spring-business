@@ -33,7 +33,7 @@ jobs:
         - ./mvnw spring-boot:build-image
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker images
-        - docker tag spring-business $DOCKER_USERNAME/spring-business:0.0.1-SNAPSHOT
+        - docker tag spring-business::0.0.1-SNAPSHOT $DOCKER_USERNAME/spring-business:0.0.1-SNAPSHOT
         - docker push $DOCKER_USERNAME/spring-business:0.0.1-SNAPSHOT
     - stage: deploy heroku
       deploy:
