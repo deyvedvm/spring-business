@@ -20,18 +20,17 @@ cache:
 
 jobs:
   include:
-    - stage: clean
-      script: ./mvnw clean
-    - stage: install
-      script: ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-    - stage: test
-      script: ./mvnw test -B
-    - stage: codecov
-      script: bash <(curl -s https://codecov.io/bash)
-    - stage: build image
-      script: ./mvnw spring-boot:build-image
-    - stage: push docker hub
+    - stage: clean amd install
       script:
+        - ./mvnw clean
+        - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+    - stage: test and codecov
+      script:
+        - ./mvnw test -B
+        - bash <(curl -s https://codecov.io/bash)
+    - stage: build image and push imaga to docker hub
+      script:
+        - ./mvnw spring-boot:build-image
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker images
         - docker tag spring-business $DOCKER_USERNAME/spring-business:0.0.1-SNAPSHOT
