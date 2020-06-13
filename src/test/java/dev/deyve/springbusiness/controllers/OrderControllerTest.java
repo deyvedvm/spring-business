@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.deyve.springbusiness.models.Order;
 import dev.deyve.springbusiness.models.Product;
 import dev.deyve.springbusiness.services.OrderService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,10 +56,6 @@ class OrderControllerTest {
         ordersMock = Collections.singletonList(orderMock);
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
     @Test
     @DisplayName("Get Orders - should return all orders")
     void getOrdersTest() throws Exception {
@@ -77,10 +72,7 @@ class OrderControllerTest {
         List<Order> orders = objectMapper.readValue(contentAsString, new TypeReference<>() {
         });
 
-        System.out.println(orders);
-
         assertEquals(orders, ordersMock, "Incorrect Response content");
         assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus(), "Incorrect Response Status");
     }
-
 }
